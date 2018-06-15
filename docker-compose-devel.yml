@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+
+  yesod:
+    container_name: yesodServer
+    build:
+      context: .
+      dockerfile: docker/DockerfileYesod
+
+    command: /bin/bash ./docker/startup.sh
+
+    volumes:
+      - .:/opt/server

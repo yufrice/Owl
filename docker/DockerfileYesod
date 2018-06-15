@@ -1,0 +1,5 @@
+FROM haskell:latest
+
+WORKDIR /opt/server
+
+COPY .. /opt/server

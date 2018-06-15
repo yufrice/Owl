@@ -1,0 +1,4 @@
+database:
+  database: Owl_test
+
+auth-dummy-login: true
