@@ -6,6 +6,11 @@ stages:
   - test
   - deploy
 
+cache:
+    paths:
+    - .stack-work
+    - .stack-test
+
 debs:
   stage: debs
   script:
