@@ -4,6 +4,7 @@ stages:
   - debs
   - build
   - test
+  - deploy
 
 debs:
   stage: deps
@@ -14,7 +15,6 @@ build:
   stage: build
   script:
     - "stack build"
-    - "stack exec -- yesod keter"
 
 test:
   stage: test
@@ -22,8 +22,12 @@ test:
     - "stack test --flag Owl:library-only --flag Owl:dev"
     - "stack exec -- hlint ."
 
-artifacts:
-  paths:
-    - Owl.keter
+deploy:
+  stage: deploy
+  script:
+    - "stack exec -- yesod keter"
+  artifacts:
+    paths:
+      - Owl.keter
   only:
     - tags
