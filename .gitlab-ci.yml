@@ -18,7 +18,6 @@ build:
 
 test:
   stage: test
-  except: master
   script:
     - "stack test --flag Owl:library-only --flag Owl:dev"
     - "stack exec -- hlint ."
