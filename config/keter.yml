@@ -25,28 +25,28 @@ stanzas:
       # You can specify one or more hostnames for your application to respond
       # to. The primary hostname will be used for generating your application
       # root.
-      - www.Owl.com
+      - localhost
 
     # Enable to force Keter to redirect to https
     # Can be added to any stanza
     requires-secure: false
 
   # Static files.
-  - type: static-files
-    hosts:
-      - static.Owl.com
-    root: ../static
+  # - type: static-files
+  #   hosts:
+  #     - static.Owl.com
+  #   root: ../static
 
     # Uncomment to turn on directory listings.
     # directory-listing: true
 
   # Redirect plain domain name to www.
-  - type: redirect
+  # - type: redirect
 
-    hosts:
-      - Owl.com
-    actions:
-      - host: www.Owl.com
+    # hosts:
+      # - Owl.com
+    # actions:
+      # - host: www.Owl.com
         # secure: false
         # port: 80
 

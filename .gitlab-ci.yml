@@ -1,0 +1,30 @@
+image: fpco/stack-build
+
+stages:
+  - debs
+  - build
+  - test
+
+debs:
+  stage: deps
+  script:
+    - "stack install yesod-bin --install-ghc"
+
+build:
+  stage: build
+  script:
+    - "stack build"
+    - "stack exec -- yesod keter"
+
+test:
+  stage: test
+  except: master
+  script:
+    - "stack test --flag Owl:library-only --flag Owl:dev"
+    - "stack exec -- hlint ."
+
+artifacts:
+  paths:
+    - Owl.keter
+  only:
+    - tags
