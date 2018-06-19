@@ -7,7 +7,7 @@ stages:
   - deploy
 
 debs:
-  stage: deps
+  stage: debs
   script:
     - "stack install yesod-bin --install-ghc"
 
