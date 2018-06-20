@@ -11,6 +11,7 @@ cache:
     paths:
     - .stack-work
     - .stack-test
+    - "*/stack-work"
 
 debs:
   stage: debs
