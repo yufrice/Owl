@@ -10,9 +10,9 @@ cache:
     untracked: true
     key: "$CI_BUILD_NAME"
     paths:
-    - .stack-work/
-    - .stack-test/
-    - "${CI_PROJECT_DIR}/.stack-work/"
+    - .stack-work
+    - .stack-test
+    - "${CI_PROJECT_DIR}/.stack-work"
 
   
 variables:
