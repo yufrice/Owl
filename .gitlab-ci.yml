@@ -18,11 +18,15 @@ cache:
 variables:
     STACK_ROOT: "${CI_PROJECT_DIR}/.stack-root"
 
-debs:
+debs-yesod:
   stage: debs
   script:
-    - "cd "
     - "stack install yesod-bin --install-ghc"
+
+debs-hlint:
+  stage: debs
+  script:
+    - "stack install hlint --install-ghc"
 
 build:
   stage: build
@@ -31,9 +35,14 @@ build:
 
 test:
   stage: test
+  allow_failure: true
   script:
-    - "stack install hlint"
     - "stack test --flag Owl:library-only --flag Owl:dev"
+
+test-lint:
+  stage: test
+  allow_failure: true
+  script:
     - "stack exec -- hlint ."
 
 deploy:
