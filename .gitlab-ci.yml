@@ -8,14 +8,20 @@ stages:
 
 cache:
     untracked: true
+    key: "$CI_BUILD_NAME"
     paths:
-    - .stack-work
-    - .stack-test
-    - "*/stack-work"
+    - .stack-work/
+    - .stack-test/
+    - "${CI_PROJECT_DIR}/.stack-work/"
+
+  
+variables:
+    STACK_ROOT: "${CI_PROJECT_DIR}/.stack-root"
 
 debs:
   stage: debs
   script:
+    - "cd "
     - "stack install yesod-bin --install-ghc"
 
 build:
