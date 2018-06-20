@@ -1,4 +1,4 @@
-image: fpco/stack-build
+image: library/haskell:latest
 
 stages:
   - debs
@@ -24,6 +24,7 @@ build:
 test:
   stage: test
   script:
+    - "stack install hlint"
     - "stack test --flag Owl:library-only --flag Owl:dev"
     - "stack exec -- hlint ."
 
