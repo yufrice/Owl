@@ -14,8 +14,7 @@ cache:
     - .stack-work
     - .stack-test
     - "*/.stack-work"
-    - .stack-root
-    - "${STACK_ROOT}"
+    - /root/.local/bin
 
 
 debs-yesod:
