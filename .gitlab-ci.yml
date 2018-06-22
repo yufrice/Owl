@@ -6,14 +6,17 @@ stages:
   - test
   - deploy
 
+variables:
+    STACK_ROOT: "${CI_PROJECT_DIR}/.stack-root"
+
 cache:
     paths:
     - .stack-work
     - .stack-test
     - "*/.stack-work"
+    - .stack-root
+    - "${STACK_ROOT}"
 
-variables:
-    STACK_ROOT: "${CI_PROJECT_DIR}/.stack-root"
 
 debs-yesod:
   stage: debs
