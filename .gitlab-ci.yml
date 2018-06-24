@@ -1,7 +1,6 @@
-image: library/haskell:latest
+image: yufrice/yesod-hlint
 
 stages:
-  - debs
   - build
   - test
   - deploy
@@ -13,19 +12,6 @@ cache:
     paths:
     - .stack-work
     - .stack-test
-    - "*/.stack-work"
-    - /root/.local/bin
-
-
-debs-yesod:
-  stage: debs
-  script:
-    - "stack install yesod-bin --install-ghc"
-
-debs-hlint:
-  stage: debs
-  script:
-    - "stack install hlint --install-ghc"
 
 build:
   stage: build
