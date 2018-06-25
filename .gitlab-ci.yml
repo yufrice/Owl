@@ -5,9 +5,6 @@ stages:
   - test
   - deploy
 
-variables:
-    STACK_ROOT: "${CI_PROJECT_DIR}/.stack-root"
-
 cache:
     paths:
     - .stack-work
@@ -28,12 +25,12 @@ test-lint:
   stage: test
   allow_failure: true
   script:
-    - "stack exec -- hlint ."
+    - "hlint ."
 
 deploy:
   stage: deploy
   script:
-    - "stack exec -- yesod keter"
+    - "yesod keter"
   artifacts:
     paths:
       - Owl.keter
