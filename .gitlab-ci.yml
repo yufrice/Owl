@@ -1,7 +1,6 @@
 image: yufrice/yesod-hlint
 
 stages:
-  - build
   - test
   - deploy
 
@@ -10,16 +9,11 @@ cache:
     - .stack-work
     - .stack-test
 
-build:
-  stage: build
-  script:
-    - "stack build"
-
 test:
   stage: test
   allow_failure: true
   script:
-    - "stack test --flag Owl:library-only --flag Owl:dev --install-ghc"
+    - "stack test --flag Owl:library-only --flag Owl:dev"
 
 test-lint:
   stage: test
@@ -30,6 +24,7 @@ test-lint:
 deploy:
   stage: deploy
   script:
+    - "stack build"
     - "stack exec -- yesod keter"
   artifacts:
     paths:
