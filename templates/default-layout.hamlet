@@ -1,24 +1,26 @@
 
 <!-- Static navbar -->
-<nav .navbar.navbar-default.navbar-static-top>
-    <div .container>
-        <div .navbar-header>
-            <button type="button" .navbar-toggle.collapsed data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
+<nav .navbar.navbar-default.navbar-static-top .navbar-dark .bg-dark>
+    <a .navbar-brand href="#">title
+    <button .navbar-toggler type="button" data-toggle="collapse"  data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span .navbar-toggler-icon>
 
-        <div #navbar .collapse.navbar-collapse>
-            <ul .nav.navbar-nav>
-                $forall MenuItem label route _ <- navbarLeftFilteredMenuItems
-                    <li :Just route == mcurrentRoute:.active>
-                        <a href="@{route}">#{label}
-
-            <ul .nav.navbar-nav.navbar-right>
-                $forall MenuItem label route _ <- navbarRightFilteredMenuItems
-                    <li :Just route == mcurrentRoute:.active>
-                        <a href="@{route}">#{label}
+    <div .collapse.navbar-collapse id="navbarToggleExternalContent">
+            <ul .navbar-nav.mr-auto>
+                <li .nav-item>
+                    <a .nav-link href="#">Home
+                <li .nav-item>
+                    <a .nav-link href="#">Link
+                <li .nav-item>
+                    <a .nav-link.disabled href="#">Disabled
+                <li .nav-item dropdown>
+                    <a .nav-link.dropdown-toggle href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown
+                    <div .dropdown-menu aria-labelledby="dropdown01">
+                        <a .dropdown-item href="#">Action
+                        <a .dropdown-item href="#">Another action
+                        <a .dropdown-item href="#">Something else here
+            <form .form-inline.my-2.my-md-0>
+                <input .form-control type="text" placeholder="検索" aria-label="Search">
 
 <!-- Page Contents -->
 
@@ -48,3 +50,6 @@ $else
     <div .container>
         <p .text-muted>
             #{appCopyright $ appSettings master}
+
+<script>
+    feather.replace();
