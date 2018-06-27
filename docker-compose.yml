@@ -4,7 +4,12 @@ services:
 
   yesod:
     container_name: yesodServer
-    env_file: ../.env
+    env_file:
+      - .env
     build:
-      context: ./docker
+      context: ./docker/webserver
       dockerfile: Dockerfile
+      args:
+        - GitLab_Token=${GitLab_Token}
+    ports:
+      - "8484:8484"
