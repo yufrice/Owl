@@ -36,8 +36,9 @@ getHomeR = defaultLayout $ do
     --     setTitle "Welcome To Yesod!"
     --     $(widgetFile "homepage")
 
--- postHomeR :: Handler Html
--- postHomeR = do
+postHomeR :: Handler Html
+postHomeR = defaultLayout $ do
+        $(widgetFile "homepage")
     -- ((result, formWidget), formEnctype) <- runFormPost sampleForm
     -- let handlerName = "postHomeR" :: Text
     --     submission = case result of
