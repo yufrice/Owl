@@ -11,5 +11,6 @@ services:
       dockerfile: Dockerfile
       args:
         - GitLab_Token=${GitLab_Token}
+        - ReleaseVer=${ReleaseVer}
     ports:
       - "8484:8484"

@@ -1,7 +1,7 @@
 FROM haskell:latest
 
-ARG GitLab_Token
-ENV GitLab_Token "$GitLab_Token"
+ARG GitLab_Token "$GitLab_Token"
+ARG ReleaseVer="$ReleaseVer"
 
 # pull.sh deps
 RUN apt-get update \
