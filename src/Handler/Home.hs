@@ -1,12 +1,13 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE QuasiQuotes #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE TypeFamilies #-}
 module Handler.Home where
 
 import Import
-import Yesod.Form.Bootstrap4 (BootstrapFormLayout (..), renderBootstrap4)
+import qualified Yesod.Form.Bootstrap4 as Bs4
 import Text.Julius (RawJS (..))
 
 -- Define our data that will be used for creating the form.
@@ -23,53 +24,54 @@ data FileForm = FileForm
 -- functions. You can spread them across multiple files if you are so
 -- inclined, or create a single monolithic file.
 getHomeR :: Handler Html
-getHomeR = defaultLayout $ do
-        $(widgetFile "homepage")
-    -- (formWidget, formEnctype) <- generateFormPost sampleForm
-    -- let submission = Nothing :: Maybe FileForm
-    --     handlerName = "getHomeR" :: Text
-    -- allComments <- runDB $ getAllComments
-
-    -- defaultLayout $ do
-    --     let (commentFormId, commentTextareaId, commentListId) = commentIds
-    --     aDomId <- newIdent
-    --     setTitle "Welcome To Yesod!"
-    --     $(widgetFile "homepage")
+getHomeR = do
+    (searchWidget, enctype) <- generateFormPost searchForm
+    defaultLayout $ do
+        setTitle "home"
+        [whamlet|
+            <div .container-fluid>
+                <div .row>
+                    ^{navber searchWidget enctype}
+                    <div .col-md-8>
+                        <div .container>
+                            ^{display}
+        |]
 
 postHomeR :: Handler Html
-postHomeR = defaultLayout $ do
-        $(widgetFile "homepage")
-    -- ((result, formWidget), formEnctype) <- runFormPost sampleForm
-    -- let handlerName = "postHomeR" :: Text
-    --     submission = case result of
-    --         FormSuccess res -> Just res
-    --         _ -> Nothing
-    -- allComments <- runDB $ getAllComments
+postHomeR = do
+    ((result, searchWidget), enctype) <- runFormPost searchForm
+    case result of
+        FormSuccess result -> do
+            products <- runDB $ selectList [ProductName ==. result] [Asc ProductId]
+            defaultLayout $ do
+                setTitle "home"
+                [whamlet|
+                    <div .container-fluid>
+                        <div .row>
+                            ^{navber searchWidget enctype}
+                            <div .col-md-8>
+                                <div .container>
+                                    ^{display}
+                                    ^{resultView products}
+                |]
+        _-> defaultLayout $(widgetFile "homepage")
 
-    -- defaultLayout $ do
-    --     let (commentFormId, commentTextareaId, commentListId) = commentIds
-    --     aDomId <- newIdent
-    --     setTitle "Welcome To Yesod!"
-    --     $(widgetFile "homepage")
+navber :: Widget -> Enctype -> Widget
+navber searchWidget enctype = $(widgetFile "navber")
 
-sampleForm :: Form FileForm
-sampleForm = renderBootstrap4 BootstrapBasicForm $ FileForm
-    <$> fileAFormReq "Choose a file"
-    <*> areq textField textSettings Nothing
-    -- Add attributes like the placeholder and CSS classes.
-    where textSettings = FieldSettings
-            { fsLabel = "What's on the file?"
-            , fsTooltip = Nothing
-            , fsId = Nothing
-            , fsName = Nothing
-            , fsAttrs =
-                [ ("class", "form-control")
-                , ("placeholder", "File description")
-                ]
-            }
+display :: Widget
+display = toWidget [whamlet|
+        <div .jumbotron>
+            <h1 .display-4>
+                text
+            <p>
+                text text
+    |]
 
-commentIds :: (Text, Text, Text)
-commentIds = ("js-commentForm", "js-createCommentTextarea", "js-commentList")
+resultView :: [Entity Product] -> Widget
+resultView products = $(widgetFile "result")
 
-getAllComments :: DB [Entity Comment]
-getAllComments = selectList [] [Asc CommentId]
+searchForm:: Form Text
+searchForm = Bs4.renderBootstrap4 Bs4.BootstrapBasicForm
+        $ areq textField (Bs4.bfs (""::Text)) Nothing
+        <* Bs4.bootstrapSubmit ("Search" :: Bs4.BootstrapSubmit Text)

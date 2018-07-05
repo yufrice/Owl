@@ -1,5 +1,4 @@
-
-<!-- Static navbar -->
+<!-- Navbar -->
 <nav .navbar.navbar-default.navbar-static-top .navbar-dark .bg-dark>
     <a .navbar-brand href="#">title
     <button .navbar-toggler type="button" data-toggle="collapse"  data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -8,7 +7,7 @@
     <div .collapse.navbar-collapse id="navbarToggleExternalContent">
             <ul .navbar-nav.mr-auto>
                 <li .nav-item>
-                    <a .nav-link href="#">Home
+                    <a .nav-link href=@{HomeR}>Home
                 <li .nav-item>
                     <a .nav-link href="#">Link
                 <li .nav-item>
@@ -23,7 +22,6 @@
                 <input .form-control type="text" placeholder="検索" aria-label="Search">
 
 <!-- Page Contents -->
-
 <div .container>
     $if not $ Just HomeR == mcurrentRoute
         <ul .breadcrumb>
