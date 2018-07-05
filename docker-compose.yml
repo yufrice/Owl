@@ -2,15 +2,41 @@ version: '3'
 
 services:
 
-  yesod:
-    container_name: yesodServer
-    env_file:
-      - .env
-    build:
-      context: ./docker/webserver
-      dockerfile: Dockerfile
-      args:
-        - GitLab_Token=${GitLab_Token}
-        - ReleaseVer=${ReleaseVer}
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_USERNAME: User
+      MONGO_PASS: Pass 
+      MONGO_INITDB_DATABASE: Owl
     ports:
-      - "8484:8484"
+      - '27017:27017'
+    volumes:
+      - ./docker/database:/docker-entrypoint-initdb.d
+
+  db-express:
+    image: mongo-express
+    restart: always
+    links:
+        - mongo
+    ports:
+      - '8081:8081'
+    environment:
+      ME_CONFIG_OPTIONS_EDITORTHEME: ambiance
+      ME_CONFIG_BASICAUTH_USERNAME: User
+      ME_CONFIG_BASICAUTH_PASSWORD: Pass
+
+  # yesod:
+  #   container_name: yesodServer
+  #   env_file:
+  #     - .env
+  #   build:
+  #     context: ./docker/webserver
+  #     dockerfile: Dockerfile
+  #     args:
+  #       - GitLab_Token=${GitLab_Token}
+  #       - ReleaseVer=${ReleaseVer}
+  #   ports:
+  #     - "8484:8484"
+  #   links:
+  #     - mongo
