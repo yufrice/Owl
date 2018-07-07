@@ -8,7 +8,6 @@ module Handler.Home where
 
 import Import
 import qualified Yesod.Form.Bootstrap4 as Bs4
-import Text.Julius (RawJS (..))
 
 -- Define our data that will be used for creating the form.
 data FileForm = FileForm

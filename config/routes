@@ -12,3 +12,4 @@
 /comments CommentR POST
 
 /profile ProfileR GET
+/p/#ProductId ProductsR GET

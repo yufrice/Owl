@@ -7,4 +7,8 @@
                         <img .card-img-top src=#{productImage product}>
                         <div .card-body>
                             <p .card-text> #{productName product}
+                            <div .d-flex.justify-content-bewteen.align-items-center>
+                                <div .btn-group>
+                                    <a role="button" .btn.btn-sm.btn-outline-secondary href=@{ProductsR id}>aa
+                                    <button type="button" .btn.btn-sm.btn-outline-secondary>tt
                             
