@@ -10,6 +10,7 @@ dependencies:
 - yesod >=1.6 && <1.7
 - yesod-core >=1.6 && <1.7
 - yesod-auth >=1.6 && <1.7
+- yesod-auth-hashdb
 - yesod-static >=1.6 && <1.7
 - yesod-form >=1.6 && <1.7
 - yesod-form-bootstrap4

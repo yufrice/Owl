@@ -13,3 +13,4 @@
 
 /profile ProfileR GET
 /p/#ProductId ProductsR GET
+/admin AdminR GET
