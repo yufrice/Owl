@@ -17,6 +17,7 @@ import Text.Jasmine                (minifym)
 import Control.Monad.Logger        (LogSource)
 
 import Yesod.Auth.HashDB           (authHashDB, HashDBUser (..))
+import Yesod.Auth.Message          (AuthMessage(InvalidLogin))
 import Yesod.Core.Types            (Logger)
 import Yesod.Default.Util          (addStaticContentExternal)
 import qualified Yesod.Core.Unsafe as Unsafe
@@ -217,6 +218,13 @@ instance YesodAuth App where
     redirectToReferer :: App -> Bool
     redirectToReferer _ = True
 
+    authenticate :: (MonadHandler m, HandlerSite m ~ App)
+                 => Creds App -> m (AuthenticationResult App)
+    authenticate creds = liftHandler $ runDB $ do
+        x <- getBy $ UniqueUser $ credsIdent creds
+        case x of
+            Just (Entity uid _) -> return $ Authenticated uid
+            Nothing -> return $ UserError InvalidLogin
     -- You can add other plugins like Google Email, email or OAuth here
     authPlugins :: App -> [AuthPlugin App]
     authPlugins _ = [authHashDB (Just . UniqueUser)]
