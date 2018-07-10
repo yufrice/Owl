@@ -76,15 +76,10 @@ authenticateAs (Entity _ u) = do
 
 -- | Create a user.  The dummy email entry helps to confirm that foreign-key
 -- checking is switched off in wipeDB for those database backends which need it.
-createUser :: Text -> YesodExample App (Entity User)
-createUser ident = runDB $ do
+createUser :: Text -> Text -> YesodExample App (Entity User)
+createUser ident pass = runDB $ do
     user <- insertEntity User
         { userIdent = ident
-        , userPassword = Nothing
-        }
-    _ <- insert Email
-        { emailEmail = ident
-        , emailUserId = Just $ entityKey user
-        , emailVerkey = Nothing
+        , userPassword = pass
         }
     return user
