@@ -1,5 +1,5 @@
 <!-- Navbar -->
-<nav .navbar.navbar-default.navbar-static-top .navbar-dark .bg-dark>
+<header .navbar.navbar-default.navbar-static-top .navbar-dark .bg-dark>
     <a .navbar-brand href="@{HomeR}">title
     <button .navbar-toggler type="button" data-toggle="collapse"  data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
         <span .navbar-toggler-icon>
@@ -18,41 +18,21 @@
                         <a .dropdown-item href="#">Action
                         <a .dropdown-item href="#">Another action
                         <a .dropdown-item href="#">Something else here
-                <li .nav-item>
-                    $maybe uid <- maid
-                        <a .nav-link href=@{AuthR LogoutR}>Logout
-                    $nothing
+                $maybe uid <- maid
+                    <li .nav-item>
+                        <a .nav-link href=@{AdminR}> Admin
+                    <li .nav-item>
+                        <a .nav-link href=@{AuthR LogoutR}> Logout
+                $nothing
+                    <li .nav-item>
                         <a .nav-link href=@{AuthR LoginR}>Login
-            <form .form-inline.my-2.my-md-0>
-                <input .form-control type="text" placeholder="検索" aria-label="Search">
 
-<!-- Page Contents -->
-<div .container>
-    $if not $ Just HomeR == mcurrentRoute
-        <ul .breadcrumb>
-            $forall bc <- parents
-                <li>
-                    <a href="@{fst bc}">#{snd bc}
-
-            <li .active>#{title}
-
-    $maybe msg <- mmsg
-      <div .alert.alert-info #message>#{msg}
-
-
-$if (Just HomeR == mcurrentRoute)
-    ^{widget}
-$else
-    <div .container>
-        <div .row>
-            <div .col-md-12>
-                ^{widget}
+^{widget}
 
 <!-- Footer -->
 <footer .footer>
-    <div .container>
-        <p .text-muted>
-            #{appCopyright $ appSettings master}
+    <p .text-muted>
+        #{appCopyright $ appSettings master}
 
 <script>
     feather.replace();

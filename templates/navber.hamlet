@@ -1,4 +1,4 @@
-<nav .col-md-2.d-none.d-md-block.bg-light.sidebar>
+<nav .col-lg-2.d-none.d-md-block.bg-light.sidebar>
     <div .nav-sticky>
         <ul .nav.flex-column>
             <li .nav-item>

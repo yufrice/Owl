@@ -1,0 +1,20 @@
+<div .mt-5>
+    <div .row>
+        <div .col-lg-4.offset-lg-1>
+            <div .card.bg-light>
+                <div .card-header> Header
+                <div .card-body>
+                    $if not $ null products
+                        <ul .list-group>
+                            $forall Entity id product <- products
+                                <li .list-group-item.d-flex.justify-content-between.align-items-center>
+                                    <a href=@{ProductsR id}> #{productName product}
+                                    <span .badge.badge-pill.btn-group.btn-group-toggle data-toggle="buttons">
+                                        <input .btn.btn-secondy type="button" value="Update">
+                                        <input .btn.btn-secondy type="button" value="Delete">
+        <div .col-lg-4.offset-lg-1>
+            <div .card.bg-light>
+                <div .card-header> Header
+                <div .card-body>
+                    <form method=post action=@{AdminR} enctype=#{enctype}>
+                        ^{formWidget}

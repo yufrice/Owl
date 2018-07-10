@@ -2,8 +2,8 @@
     <div .row>
         $if not $ null products
             $forall Entity id product <- products
-                <div .col-md-4>
-                    <div .card.md-4.box-shadow>
+                <div .col-lg-4>
+                    <div .card.box-shadow>
                         <img .card-img-top src=#{productImage product}>
                         <div .card-body>
                             <p .card-text> #{productName product}
