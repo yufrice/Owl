@@ -16,7 +16,7 @@ import Text.Hamlet                 (hamletFile)
 import Text.Jasmine                (minifym)
 import Control.Monad.Logger        (LogSource)
 
-import Yesod.Auth.HashDB           (authHashDB, HashDBUser (..))
+import Yesod.Auth.HashDB           (authHashDB)
 import Yesod.Auth.Message          (AuthMessage(InvalidLogin))
 import Yesod.Core.Types            (Logger)
 import Yesod.Default.Util          (addStaticContentExternal)
@@ -233,10 +233,6 @@ isAuthenticated = do
     return $ case muid of
         Nothing -> Unauthorized "You must login to access this page"
         Just _ -> Authorized
-
-instance HashDBUser User where
-    userPasswordHash = Just . userPassword
-    setPasswordHash h u = u { userPassword = h }
 
 instance YesodAuthPersist App
 
