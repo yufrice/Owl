@@ -10,4 +10,4 @@
 / HomeR GET POST
 
 /p/#ProductId ProductsR GET
-/admin AdminR GET
+/admin AdminR GET POST
