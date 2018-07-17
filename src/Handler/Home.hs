@@ -48,6 +48,9 @@ postHomeR = do
                             ^{display}
             |]
 
+resultImage :: Text -> Route Static
+resultImage = flip StaticRoute ([]) . ("images" :) . return
+
 navber :: Widget -> Enctype -> Widget
 navber searchWidget enctype = $(widgetFile "navber")
 

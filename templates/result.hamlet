@@ -4,7 +4,7 @@
             $forall Entity id product <- products
                 <div .col-lg-4>
                     <div .card.box-shadow>
-                        <img .card-img-top src=#{productImage product}>
+                        <img .card-img-top src=@{StaticR $ resultImage $ productImage product}>
                         <div .card-body>
                             <p .card-text> #{productName product}
                             <div .d-flex.justify-content-bewteen.align-items-center>

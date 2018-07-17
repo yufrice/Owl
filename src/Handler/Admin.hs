@@ -7,7 +7,6 @@
 module Handler.Admin where
 
 import Import
-import Crypto.Hash (Digest (..), hashWith, SHA256 (..))
 import Crypto.Hash.Conduit (sinkHash)
 import Text.Regex (mkRegex, subRegex)
 import qualified Yesod.Form.Bootstrap4 as Bs4
@@ -32,15 +31,12 @@ postAdminR = do
             uri <- writeToServer fileInfo
             runDB $ insert $ Product {
                 productName = name
-                , productImage = encodeUri uri
+                , productImage = pack uri
                 , productVector = desc
             }
             defaultLayout [whamlet| fileInfo|]
         _ ->
             redirect AdminR
-
-encodeUri :: FilePath -> Text
-encodeUri = pack . (++) "static/images/" 
 
 writeToServer :: FileInfo -> Handler FilePath
 writeToServer file = do
@@ -54,10 +50,10 @@ typeFromName file = subRegex (mkRegex "\"")
     (subRegex (mkRegex "^[^.]*.") (show $ fileName file) "") ""
 
 imageFilePath :: String -> FilePath
-imageFilePath hash = "static" </> "images" </> hash
+imageFilePath = (("static" </> "images") </>)
 
 hashFromFile :: MonadUnliftIO m => FileInfo -> m (Digest SHA256)
-hashFromFile file = liftIO $ runConduitRes $ fileSource file .| sinkHash
+hashFromFile = liftIO . runConduitRes . (.| sinkHash) . fileSource
 
 
 fileForm :: Form FileForm
