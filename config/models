@@ -20,4 +20,5 @@ Product json
     name Text
     image Text
     vector Text
+    UniqueProduct image
     deriving Show

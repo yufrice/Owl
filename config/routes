@@ -11,3 +11,4 @@
 
 /p/#ProductId ProductsR GET
 /admin AdminR GET POST
+/admin/delete/#ProductId DeleteR GET
