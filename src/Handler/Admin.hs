@@ -7,7 +7,9 @@
 module Handler.Admin where
 
 import Import
-import Crypto.Hash.Conduit (sinkHash)
+import Crypto.Hash (Digest, SHA256)
+import qualified Crypto.Hash.Conduit as ConduitH
+import Database.Persist.MongoDB (unMongoKey)
 import Text.Regex (mkRegex, subRegex)
 import qualified Yesod.Form.Bootstrap4 as Bs4
 
@@ -29,21 +31,29 @@ postAdminR = do
     case result of
         FormSuccess (FileForm name desc fileInfo) -> do
             uri <- writeToServer fileInfo
-            runDB $ insert $ Product {
-                productName = name
-                , productImage = pack uri
-                , productVector = desc
-            }
-            defaultLayout [whamlet| fileInfo|]
-        _ ->
-            redirect AdminR
+            case uri of
+                Just uri -> do
+                    $(logInfo) "write"
+                    runDB $ insert $ Product {
+                        productName = name 
+                        , productImage = pack uri
+                        , productVector = desc
+                    }
+                    redirect AdminR
+                Nothing -> invalidArgs ["Conflict Image"]
+        _ -> badMethod
 
-writeToServer :: FileInfo -> Handler FilePath
+writeToServer :: FileInfo -> Handler (Maybe FilePath)
 writeToServer file = do
     hash <- hashFromFile file
-    uri <- return $ imageFilePath $ show hash <.> typeFromName file
-    liftIO $ fileMove file uri
-    return $ show hash <.> typeFromName file
+    uri <- return $ show hash <.> typeFromName file
+    products <- runDB $ selectList [ProductImage ==. pack uri] []
+    $(logInfo) $ pack uri
+    case products of
+        [] -> do
+            liftIO $ fileMove file $ imageFilePath uri
+            return <$> Just $ show hash <.> typeFromName file
+        _ -> return $ Nothing
 
 typeFromName :: FileInfo -> String
 typeFromName file = subRegex (mkRegex "\"") 
@@ -53,8 +63,10 @@ imageFilePath :: String -> FilePath
 imageFilePath = (("static" </> "images") </>)
 
 hashFromFile :: MonadUnliftIO m => FileInfo -> m (Digest SHA256)
-hashFromFile = liftIO . runConduitRes . (.| sinkHash) . fileSource
+hashFromFile = liftIO . runConduitRes . (.| ConduitH.sinkHash) . fileSource
 
+deleteModalId :: ProductId -> Text
+deleteModalId = pack .(++) "#deleteModal_" . show
 
 fileForm :: Form FileForm
 fileForm = Bs4.renderBootstrap4 Bs4.BootstrapBasicForm $ FileForm
