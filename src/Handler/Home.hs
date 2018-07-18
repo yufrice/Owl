@@ -11,16 +11,16 @@ import qualified Yesod.Form.Bootstrap4 as Bs4
 
 getHomeR :: Handler Html
 getHomeR = do
-    (searchWidget, enctype) <- generateFormPost searchForm
-    defaultLayout $ do
-        setTitle "home"
-        [whamlet|
-            <div .container-fluid>
-                <div .row>
-                    ^{navber searchWidget enctype}
-                    <div .col-lg-8>
-                        ^{display}
-        |]
+  (searchWidget, enctype) <- generateFormPost searchForm
+  defaultLayout $ do
+    setTitle "home"
+    [whamlet|
+      <div .container-fluid>
+        <div .row>
+            ^{navber searchWidget enctype}
+            <div .col-lg-8>
+                ^{display}
+    |]
 
 postHomeR :: Handler Html
 postHomeR = do
@@ -38,7 +38,7 @@ postHomeR = do
                                 ^{display}
                                 ^{resultView products}
                 |]
-        _-> defaultLayout $ do
+        _ -> defaultLayout $ do
             setTitle "home"
             [whamlet|
                 <div .container-fluid>
@@ -57,10 +57,9 @@ navber searchWidget enctype = $(widgetFile "navber")
 display :: Widget
 display = toWidget [whamlet|
         <div .jumbotron.mt-5>
-            <h1 .display-4>
-                text
-            <p>
-                text text
+          <h1 .display-4> text
+            text
+          <p> text text
     |]
 
 resultView :: [Entity Product] -> Widget
