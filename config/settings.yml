@@ -31,7 +31,7 @@ ip-from-header: "_env:IP_FROM_HEADER:false"
 database:
   user:        "Owl"
   password:    "Owl"
-  host:        "localhost"
+  host:        "mongo"
   # See config/test-settings.yml for an override during tests
   database:    "Owl"
   connections: 10
