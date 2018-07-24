@@ -19,6 +19,6 @@ Comment json -- Adding "json" causes ToJSON and FromJSON instances to be derived
 Product json
     name Text
     image Text
-    vector Text
+    desc Text
     UniqueProduct image
     deriving Show

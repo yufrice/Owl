@@ -27,7 +27,7 @@ postHomeR = do
     ((result, searchWidget), enctype) <- runFormPost searchForm
     case result of
         FormSuccess result -> do
-            products <- runDB $ selectList [ProductName ==. result] [Asc ProductId]
+            products <- runDB $ selectList [ProductName ==. result] []
             defaultLayout $ do
                 setTitle "home"
                 [whamlet|
