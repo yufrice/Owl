@@ -21,7 +21,7 @@ data FileForm = FileForm
 
 getAdminR :: Handler Html
 getAdminR = do
-    products <- runDB $ selectList [] [Asc ProductId]
+    products <- runDB $ selectList [] []
     (formWidget, enctype) <- generateFormPost fileForm
     defaultLayout $(widgetFile "admin")
 
@@ -37,7 +37,7 @@ postAdminR = do
                     runDB $ insert $ Product {
                         productName = name 
                         , productImage = pack uri
-                        , productVector = desc
+                        , productDesc = desc
                     }
                     redirect AdminR
                 Nothing -> invalidArgs ["Conflict Image"]
@@ -47,13 +47,12 @@ writeToServer :: FileInfo -> Handler (Maybe FilePath)
 writeToServer file = do
     hash <- hashFromFile file
     uri <- return $ show hash <.> typeFromName file
-    products <- runDB $ selectList [ProductImage ==. pack uri] []
-    $(logInfo) $ pack uri
+    products <- runDB $ selectFirst [ProductImage ==. pack uri] []
     case products of
-        [] -> do
+        Nothing -> do
             liftIO $ fileMove file $ imageFilePath uri
             return <$> Just $ show hash <.> typeFromName file
-        _ -> return $ Nothing
+        Just _ -> return $ Nothing
 
 typeFromName :: FileInfo -> String
 typeFromName file = subRegex (mkRegex "\"") 
