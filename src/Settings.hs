@@ -41,7 +41,7 @@ data AppSettings = AppSettings
     , appIpFromHeader           :: Bool
     -- ^ Get the IP address from the header when logging. Useful when sitting
     -- behind a reverse proxy.
-
+    , appAdminPass              :: ByteString
     , appDetailedRequestLogging :: Bool
     -- ^ Use detailed request logging system
     , appShouldLogAll           :: Bool
@@ -77,6 +77,7 @@ instance FromJSON AppSettings where
         appHost                   <- fromString <$> o .: "host"
         appPort                   <- o .: "port"
         appIpFromHeader           <- o .: "ip-from-header"
+        appAdminPass              <- encodeUtf8 <$> o .: "adminPass"
 
         dev                       <- o .:? "development"      .!= defaultDev
 

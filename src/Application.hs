@@ -78,7 +78,8 @@ makeFoundation appSettings = do
             res  <- withMongoPool (defaultMongoConf "Owl") $ runMongoDBPoolDef $ selectFirst [] [Asc UserIdent]
             case res of
                 Nothing -> do
-                    hash <- decodeUtf8 <$> makePassword "pass" 17
+                    pass <- return $ appAdminPass $ appSettings
+                    hash <- decodeUtf8 <$> makePassword pass 17
                     withMongoPool (defaultMongoConf "Owl")
                         $ runMongoDBPoolDef
                         $ insert $ User "admin" hash
