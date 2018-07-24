@@ -21,7 +21,7 @@ module Application
     ) where
 
 import Control.Monad.Logger                 (liftLoc)
-import Database.Persist.MongoDB             (MongoContext)
+import Database.Persist.MongoDB             (defaultMongoConf, docToEntityThrow, recordToDocument, runMongoDBPoolDef, MongoContext, withMongoPool)
 import Import
 import Language.Haskell.TH.Syntax           (qLocation)
 import Network.HTTP.Client.TLS              (getGlobalManager)
@@ -36,6 +36,7 @@ import Network.Wai.Middleware.RequestLogger (Destination (Logger),
                                              mkRequestLogger, outputFormat)
 import System.Log.FastLogger                (defaultBufSize, newStdoutLoggerSet,
                                              toLogStr)
+import Yesod.Auth.Util.PasswordStore        (makePassword)
 
 -- Import all relevant handler modules here.
 -- Don't forget to add new modules to your cabal file!
@@ -67,8 +68,22 @@ makeFoundation appSettings = do
     -- Create the database connection pool
     appConnPool <- createPoolConfig $ appDatabaseConf appSettings
 
+    _ <- initDB
+
     -- Return the foundation
     return App {..}
+    where
+        initDB :: IO ()
+        initDB = do
+            res  <- withMongoPool (defaultMongoConf "Owl") $ runMongoDBPoolDef $ selectFirst [] [Asc UserIdent]
+            case res of
+                Nothing -> do
+                    hash <- decodeUtf8 <$> makePassword "pass" 17
+                    withMongoPool (defaultMongoConf "Owl")
+                        $ runMongoDBPoolDef
+                        $ insert $ User "admin" hash
+                    pure ()
+                Just _ -> pure ()
 
 -- | Convert our foundation to a WAI Application by calling @toWaiAppPlain@ and
 -- applying some additional middlewares.
