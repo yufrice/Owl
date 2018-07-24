@@ -6,16 +6,16 @@ services:
     image: mongo
     restart: always
     environment:
-      MONGO_USERNAME: User
-      MONGO_PASS: Pass
+      MONGO_USERNAME: Owl
+      MONGO_PASS: Owl
       MONGO_INITDB_DATABASE: Owl
     volumes:
-      - ./docker/database:/docker-entrypoint-initdb.d
+      - ./docker/database/init.js:/docker-entrypoint-initdb.d/init.js
 
   db-express:
     image: mongo-express
     restart: always
-    links:
+    depends_on:
         - mongo
     ports:
       - '8081:8081'
@@ -34,7 +34,7 @@ services:
       args:
         - GitLab_Token=${GitLab_Token}
         - ReleaseVer=${ReleaseVer}
+    depends_on:
+      - mongo
     ports:
       - "8484:8484"
-    links:
-      - mongo
