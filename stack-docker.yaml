@@ -68,7 +68,7 @@ docker:
   enable: true
 
 image:
-  containers:
+  container:
     base: fpco/stack-build
     add:
       config: /config

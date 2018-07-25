@@ -14,12 +14,16 @@ test:
   allow_failure: true
   script:
     - "stack test --flag Owl:library-only --flag Owl:dev"
+  except:
+    - wip
 
 test-lint:
   stage: test
   allow_failure: true
   script:
     - "stack exec -- hlint ."
+  except:
+    - wip
 
 deploy:
   stage: deploy
