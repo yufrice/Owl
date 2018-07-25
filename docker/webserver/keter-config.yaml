@@ -9,7 +9,7 @@ root: ..
 listeners:
     # HTTP
     - host: "127.0.0.1" # Listen on all IPv4 hosts
-    - port: 8484
+    - port: 80
       #port: 80 # Could be used to modify port
 
 # User to run applications as

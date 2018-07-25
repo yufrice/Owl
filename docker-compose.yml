@@ -37,4 +37,4 @@ services:
     depends_on:
       - mongo
     ports:
-      - "8484:8484"
+      - "8484:80"
