@@ -64,6 +64,6 @@ docker_deploy:
   image: docker:stable
   script:
     - docker build -t $CI_REGISTRY:$CI_BUILD_TAG .
-    - docker push "$CI_REGISTRY_IMAGE"
+    - docker push $CI_REGISTRY_IMAGE
   only:
     - tags
