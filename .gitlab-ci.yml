@@ -1,5 +1,12 @@
 image: yufrice/yesod-hlint
 
+variables:
+  DOCKER_HOST: tcp://docker:2375/
+  DOCKER_DRIVER: overlay2
+
+services:
+- docker:dind
+
 stages:
   - test
   - deploy
@@ -37,11 +44,15 @@ deploy:
   only:
     - tags
 
+services:
+- docker:dind
+
 before_script:
   - docker login -u "gitlab-ci-token" -p "$CI_BUILD_TOKEN" $CI_REGISTRY
 
 docker_deploy_latest:
   stage: deploy
+  image: docker:stable
   script:
     - docker build -t $CI_REGISTRY:latest .
     - docker push "$CI_REGISTRY_IMAGE"
@@ -50,6 +61,7 @@ docker_deploy_latest:
 
 docker_deploy:
   stage: deploy
+  image: docker:stable
   script:
     - docker build -t $CI_REGISTRY:$CI_BUILD_TAG .
     - docker push "$CI_REGISTRY_IMAGE"
