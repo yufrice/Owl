@@ -1,6 +1,7 @@
 image: yufrice/yesod-hlint
 
 variables:
+  CONTAINER_IMAGE: registry.gitlab.com/$CI_PROJECT_PATH
   DOCKER_HOST: tcp://docker:2375/
   DOCKER_DRIVER: overlay2
 
@@ -54,8 +55,8 @@ docker_deploy_latest:
   stage: deploy
   image: docker:stable
   script:
-    - docker build -t $CI_REGISTRY:latest .
-    - docker push $CI_REGISTRY_IMAGE
+    - docker build -t $CONTAINER_IMAGE:latest .
+    - docker push $CONTAINER_IMAGE:latest
   except:
     - tags
 
@@ -63,7 +64,7 @@ docker_deploy:
   stage: deploy
   image: docker:stable
   script:
-    - docker build -t $CI_REGISTRY:$CI_BUILD_TAG .
-    - docker push $CI_REGISTRY_IMAGE
+    - docker build -t $CONTAINER_IMAGE:$CI_BUILD_TAG .
+    - docker push $CONTAINER_IMAGE:$CI_BUILD_TAG
   only:
     - tags
