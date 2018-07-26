@@ -36,10 +36,17 @@ deploy:
   only:
     - tags
 
+before_script:
+  - curl -fsSL https://download.docker.com/linux/ubuntu/gpg
+  - apt-key add
+  - add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+  - apt-get update
+  - apt-get -y install docker-ce
+
 docker_deploy:
   stage: deploy
   script:
-    - apt-get install -y docker
     - stack build --stack-yaml stack-docker.yaml
+    - stack image container --stack-yaml stack-docker.yaml
     - docker login -u "gitlab-ci-token" -p "$CI_BUILD_TOKEN" $CI_REGISTRY
     - docker push "$CI_REGISTRY_IMAGE
