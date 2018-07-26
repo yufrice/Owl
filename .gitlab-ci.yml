@@ -55,7 +55,7 @@ docker_deploy_latest:
   image: docker:stable
   script:
     - docker build -t $CI_REGISTRY:latest .
-    - docker push "$CI_REGISTRY_IMAGE"
+    - docker push $CI_REGISTRY_IMAGE
   except:
     - tags
 
