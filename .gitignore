@@ -22,3 +22,6 @@ cabal.sandbox.config
 \#*
 Owl.cabal
 .env
+node_modules
+static/builds
+npm-debug.log
