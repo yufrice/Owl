@@ -26,6 +26,7 @@ test-lint:
     - wip
 
 deploy:
+  image: yufrice/yesod-keter
   stage: deploy
   script:
     - "stack build"
@@ -37,17 +38,20 @@ deploy:
     - tags
 
 before_script:
-  - apt-get update
-  - apt-get -y install curl apt-transport-https ca-certificates software-properties-common
-  - curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
-  - add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
-  - apt-get update
-  - apt-get -y install docker-ce
+  - docker login -u "gitlab-ci-token" -p "$CI_BUILD_TOKEN" $CI_REGISTRY
+
+docker_deploy_latest:
+  stage: deploy
+  script:
+    - docker build -t $CI_REGISTRY:latest .
+    - docker push "$CI_REGISTRY_IMAGE"
+  except:
+    - tags
 
 docker_deploy:
   stage: deploy
   script:
-    - stack build --stack-yaml stack-docker.yaml
-    - stack image container --stack-yaml stack-docker.yaml
-    - docker login -u "gitlab-ci-token" -p "$CI_BUILD_TOKEN" $CI_REGISTRY
-    - docker push "$CI_REGISTRY_IMAGE
+    - docker build -t $CI_REGISTRY:$CI_BUILD_TAG .
+    - docker push "$CI_REGISTRY_IMAGE"
+  only:
+    - tags
