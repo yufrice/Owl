@@ -38,5 +38,5 @@ getSearchR =  returnJson $ object []
 postSearchR :: forall master. (Yesod master, YesodPersistBackend master ~ MongoContext, YesodPersist master) => SubHandlerFor ApiSub master Value
 postSearchR = do
   (Search search) <- liftHandler requireCheckJsonBody :: SubHandlerFor ApiSub master Search
-  products <- liftHandler $ runDB $ selectList [ProductName ==. search ] []
-  returnJson products
+  items <- liftHandler $ runDB $ selectList [ItemName ==. search ] []
+  returnJson items

@@ -6,9 +6,9 @@ User
     password Text
     UniqueUser ident
     deriving Typeable
-Product json
+Item json
     name Text
     image Text
     desc Text
-    UniqueProduct image
+    UniqueItem image
     deriving Show
