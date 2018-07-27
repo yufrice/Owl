@@ -7,8 +7,5 @@
 /favicon.ico FaviconR GET
 /robots.txt RobotsR GET
 
-/ HomeR GET POST
-
-/p/#ProductId ProductsR GET
-/admin AdminR GET POST
-/admin/delete/#ProductId DeleteR GET
+/ HomeR GET
+/api/v1 ApisiteR ApiSub getApiSub

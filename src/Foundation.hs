@@ -23,6 +23,7 @@ import Yesod.Default.Util          (addStaticContentExternal)
 import qualified Yesod.Core.Unsafe as Unsafe
 import qualified Data.CaseInsensitive as CI
 import qualified Data.Text.Encoding as TE
+import Api.Data
 
 -- | The foundation datatype for your application. This can be a good place to
 -- keep settings and values requiring initialization before your application
@@ -34,17 +35,10 @@ data App = App
     , appConnPool    :: ConnectionPool -- ^ Database connection pool.
     , appHttpManager :: Manager
     , appLogger      :: Logger
+    , getApiSub      :: ApiSub
     }
 
-data MenuItem = MenuItem
-    { menuItemLabel :: Text
-    , menuItemRoute :: Route App
-    , menuItemAccessCallback :: Bool
-    }
-
-data MenuTypes
-    = NavbarLeft MenuItem
-    | NavbarRight MenuItem
+mkYesodData "App" $(parseRoutesFile "config/routes")
 
 -- This is where we define all of the routes in our application. For a full
 -- explanation of the syntax, please see:
@@ -58,7 +52,6 @@ data MenuTypes
 -- This function also generates the following type synonyms:
 -- type Handler = HandlerT App IO
 -- type Widget = WidgetT App IO ()
-mkYesodData "App" $(parseRoutesFile "config/routes")
 
 -- | A convenient synonym for creating forms.
 type Form x = Html -> MForm (HandlerFor App) (FormResult x, Widget)
@@ -115,10 +108,7 @@ instance Yesod App where
         -- you to use normal widget features in default-layout.
 
         maid <- maybeAuthId
-        pc <- widgetToPageContent $ do
-            addStylesheet $ StaticR css_normalize_css
-            addStylesheet $ StaticR css_bootstrap_css
-            $(widgetFile "default-layout")
+        pc <- widgetToPageContent $(widgetFile "default-layout")
         withUrlRenderer $(hamletFile "templates/default-layout-wrapper.hamlet")
 
     -- The page to be redirected to when authentication is required.
@@ -137,12 +127,11 @@ instance Yesod App where
     isAuthorized FaviconR _ = return Authorized
     isAuthorized RobotsR _ = return Authorized
     isAuthorized (StaticR _) _ = return Authorized
-    isAuthorized (ProductsR _) _ = return Authorized
+    isAuthorized (ApisiteR SearchR) _ = return Authorized
+    isAuthorized (ApisiteR _) _ = return $ Unauthorized ""
 
     -- the profile route requires that the user is authenticated, so we
     -- delegate to that function
-    isAuthorized AdminR _ = isAuthenticated
-    isAuthorized (DeleteR _) _ = isAuthenticated
 
     -- This function creates static content files in the static folder
     -- and names them based on a hash of their content. This allows

@@ -33,7 +33,7 @@ adminPass: "pass"
 database:
   user:        "Owl"
   password:    "Owl"
-  host:        "mongo"
+  host:        "localhost"
   # See config/test-settings.yml for an override during tests
   database:    "Owl"
   connections: 10

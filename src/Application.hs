@@ -37,14 +37,12 @@ import Network.Wai.Middleware.RequestLogger (Destination (Logger),
 import System.Log.FastLogger                (defaultBufSize, newStdoutLoggerSet,
                                              toLogStr)
 import Yesod.Auth.Util.PasswordStore        (makePassword)
+import Api (ApiSub(..))
 
 -- Import all relevant handler modules here.
 -- Don't forget to add new modules to your cabal file!
 import Handler.Common
 import Handler.Home
-import Handler.Products
-import Handler.Admin
-import Handler.Delete
 
 -- This line actually creates our YesodDispatch instance. It is the second half
 -- of the call to mkYesodData which occurs in Foundation.hs. Please see the
@@ -64,6 +62,8 @@ makeFoundation appSettings = do
     appStatic <-
         (if appMutableStatic appSettings then staticDevel else static)
         (appStaticDir appSettings)
+    
+    getApiSub <- return ApiSub
 
     -- Create the database connection pool
     appConnPool <- createPoolConfig $ appDatabaseConf appSettings

@@ -23,6 +23,7 @@ test:
     - "stack test --flag Owl:library-only --flag Owl:dev"
   except:
     - wip
+    - /^feature-.*$/
 
 test-lint:
   stage: test
@@ -31,6 +32,8 @@ test-lint:
     - "stack exec -- hlint ."
   except:
     - wip
+    - /^feature-.*$/
+
 
 deploy:
   image: yufrice/yesod-keter
@@ -58,6 +61,8 @@ docker_deploy_latest:
     - docker push registry.gitlab.com/aripiprazole/owl:latest
   except:
     - tags
+    - /^feature-.*$/
+
 
 docker_deploy:
   stage: deploy
