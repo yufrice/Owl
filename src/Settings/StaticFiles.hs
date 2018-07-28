@@ -17,4 +17,4 @@ import Yesod.Static (staticFilesList)
 -- If the identifier is not available, you may use:
 --
 --     StaticFile ["js", "script.js"] []
-staticFilesList "static" ["css/normalize.css", "css/bootstrap.css"] -- , "builds/bundle.js"]
+staticFilesList "static" ["css/normalize.css", "css/bootstrap.css"]
